@@ -1,14 +1,16 @@
 
+# GoodBoy
+
+Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 
 
+## Enredo:		
+	Um garoto pobre tenta se dá bem na vida, pra isso ele tem que realizar as escolhas certas pra que possa crescer profissionalmente
 
-<B>Enredo:</b>		
-Um garoto pobre tenta se dá bem na vida, pra isso ele tem que realizar as escolhas certas pra que possa crescer profissionalmente
+## Objetivos:
+	Trabalhar para ganhar dinheiro e investir no seu futuro
 
-<B>Objetivos:</b>
-Trabalhar para ganhar dinheiro e investir no seu futuro
-
-<B>Objetivos específicos:</b>
+## Objetivos específicos:
 		• Conseguir juntar dinheiro pra investir na carreira
 		• Não gastar o dinheiro com coisas desnecessárias
 
