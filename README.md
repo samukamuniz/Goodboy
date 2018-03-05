@@ -12,8 +12,8 @@ Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 	Conseguir chegar a clsse econômica A.
 
 ## Diagrama de navegação:
+	<img src="Diagrama-01.jpg" width="320" height="240" />
 	
-
 
 ## Objetivos específicos:
 	• Conseguir bater metas para subir de nível, para isso terá que juntar dinheiro estipulado em cada fase.
