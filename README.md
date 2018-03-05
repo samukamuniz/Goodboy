@@ -12,8 +12,8 @@ Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 	Conseguir chegar a clsse econômica A.
 
 ## Objetivos específicos:
-	### Conseguir bater metas para subir de nível, para isso terá que juntar dinheiro estipulado em cada fase.
-	### Desviar de gastos que podem comprometer o saldo necessário para investimento na carreira.
+	- Conseguir bater metas para subir de nível, para isso terá que juntar dinheiro estipulado em cada fase.
+	- Desviar de gastos que podem comprometer o saldo necessário para investimento na carreira.
 
 ## Regras do jogo com sistema de pontuação:
 		• Pontuações ganhas por Juntar dinheiro
