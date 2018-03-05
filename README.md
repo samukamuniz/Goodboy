@@ -40,14 +40,14 @@ Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 	O jogador começa a 1ª fase com direito a 1 saque emergencial, caso o saldo não seja utilizado, o mesmo será acumulado na fase posterior até o limite de 3.
 
 ## Sistema de Pontos:
-	Para se passar de fase o jogador deverá atingir as respectivs pontuações para cada fase: 
-		
-		• 1º fase: Atingir 1.000 pts
-		• 2º fase: Atingir 2.500 pts
-		• 3º fase: Atingir 5.000 pts
-		• 4º fase: Atingir 9.000 pts (Final)
+Para se passar de fase o jogador deverá atingir as respectivs pontuações para cada fase: 
+	
+	• 1º fase: Atingir 1.000 pts
+	• 2º fase: Atingir 2.500 pts
+	• 3º fase: Atingir 5.000 pts
+	• 4º fase: Atingir 9.000 pts (Final)
 
 ## Como o jogo acaba:
 	O jogo pode acabar de duas maneiras:
-		• Caso o jogador fique com saldo negativo (1ª fase) ou saldo inferior a fase anterior (Game Over)
-		• Caso o jogador consiga fazer parte da Elite.
+	• Caso o jogador fique com saldo negativo (1ª fase) ou saldo inferior a fase anterior (Game Over)
+	• Caso o jogador consiga fazer parte da Elite.
