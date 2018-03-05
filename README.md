@@ -22,19 +22,19 @@ Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 ## Regras do jogo com sistema de pontuação:
 
 	• Pontuações ganhas por Juntar dinheiro
-		Nota de R$ 10,00:	10pts
-		Nota de R$ 20,00:	20pts
-		Nota de R$ 50,00:	50pts
-		Nota de R$ 100,00:	100pts
+	Nota de R$ 10,00:	10pts
+	Nota de R$ 20,00:	20pts
+	Nota de R$ 50,00:	50pts
+	Nota de R$ 100,00:	100pts
 
-		* Bônus: A definir:	500pts
+	* Bônus: A definir:	500pts
 
 	• Pontuações perdidas por gastar atoa
-		Bebida Alcóolica:	10pts
-		A defnir_1:			20pts
-		A defnir_2:			50pts
-		Drogas:				100pts
-	
+	Bebida Alcóolica:	10pts
+	A defnir_1:			20pts
+	A defnir_2:			50pts
+	Drogas:				100pts
+
 
 ## Sistema de Vidas:
 	O jogador começa a 1ª fase com direito a 1 saque emergencial, caso o saldo não seja utilizado, o mesmo será acumulado na fase posterior até o limite de 3.
