@@ -11,33 +11,43 @@ Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 ## Objetivo:
 	Conseguir chegar a clsse econômica A.
 
-## Objetivos específicos:
-	- Conseguir bater metas para subir de nível, para isso terá que juntar dinheiro estipulado em cada fase.
-	- Desviar de gastos que podem comprometer o saldo necessário para investimento na carreira.
-
-## Regras do jogo com sistema de pontuação:
-		• Pontuações ganhas por Juntar dinheiro
-			Nota de R$ 10,00:	10pts
-			Nota de R$ 20,00:	20pts
-			Nota de R$ 50,00:	50pts
-			Nota de R$ 100,00:	100pts
-
-		• Pontuações perdidas por gastar atoa
-			Ingresso Festa:		10pts
-			Bebidas:		20pts
-			Drogas:		50pts
+## Diagrama de navegação:
 	
 
-<B>Sistema de Vidas:</b>
-		• 
 
-<B>Sistema de Pontos:</b>
-		• O garoto precisa juntar 
-			10.000 pts para passar da 1º fase
-			15.000 pts para passar da 2º fase
-			20.000 pts para passar da 3º fase
+## Objetivos específicos:
+	• Conseguir bater metas para subir de nível, para isso terá que juntar dinheiro estipulado em cada fase.
+	• Desviar de gastos que podem comprometer o saldo necessário para investimento na carreira.
 
-<B>Como o jogo acaba:</b>
-		• O jogo pode acabar de duas maneiras:
-			Caso o Garoto ZERE a sua pontuação (Game Over)
-			Caso o garoto consiga o cargo de Diretor
+## Regras do jogo com sistema de pontuação:
+
+	• Pontuações ganhas por Juntar dinheiro
+		Nota de R$ 10,00:	10pts
+		Nota de R$ 20,00:	20pts
+		Nota de R$ 50,00:	50pts
+		Nota de R$ 100,00:	100pts
+
+		* Bônus: A definir:	500pts
+
+	• Pontuações perdidas por gastar atoa
+		Bebida Alcóolica:	10pts
+		A defnir_1:			20pts
+		A defnir_2:			50pts
+		Drogas:				100pts
+	
+
+## Sistema de Vidas:
+	O jogador começa a 1ª fase com direito a 1 saque emergencial, caso o saldo não seja utilizado, o mesmo será acumulado na fase posterior até o limite de 3.
+
+## Sistema de Pontos:
+	Para se passar de fase o jogador deverá atingir as respectivs pontuações para cada fase: 
+		
+		• 1º fase: Atingir 1.000 pts
+		• 2º fase: Atingir 2.500 pts
+		• 3º fase: Atingir 5.000 pts
+		• 4º fase: Atingir 9.000 pts (Final)
+
+## Como o jogo acaba:
+	O jogo pode acabar de duas maneiras:
+		• Caso o jogador fique com saldo negativo (1ª fase) ou saldo inferior a fase anterior (Game Over)
+		• Caso o jogador consiga fazer parte da Elite.
