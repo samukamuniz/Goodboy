@@ -12,7 +12,7 @@ Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 	Conseguir chegar a clsse econômica A.
 
 ## Diagrama de navegação:
-	![rfyldiagram](https://github.com/samukamuniz/Goodboy/blob/master/Diagrama-01.jpg)
+	![diagrama](https://github.com/samukamuniz/Goodboy/blob/master/Diagrama-01.jpg)
 	
 
 ## Objetivos específicos:
