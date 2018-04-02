@@ -13,6 +13,7 @@ Um jogo desenvolvido em Corona para uma disciplina de Acadêmica.
 
 ## Diagrama de navegação:
 	<img src="Diagrama-01.jpg" width="320" height="240" />
+	![rfyldiagram](https://github.com/samukamuniz/Goodboy/blob/master/Diagrama-01.jpg)
 	
 
 ## Objetivos específicos:
