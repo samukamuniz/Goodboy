@@ -13,6 +13,9 @@ local cX = display.contentCenterX -- Coordenada X
 local cY = display.contentCenterY -- Coordenada Y
 local oX = display.screenOriginX -- Centro X
 local oY = display.screenOriginY -- Origem Y
+local h = display.contentHeight
+local w = display.contentWidth
+
 
 -- Set up display groups
 local backGroup = display.newGroup()
@@ -25,52 +28,75 @@ function scene:create( event )
     local money = 0
     local jumpLimit = 0 
     local dead = false
-    
+    local speedCity = 1
+    local speedGround = 3
+    local cloudCity = 0.5
     physics.start()  -- Temporarily pause the physics engine
 
     --Background
+	local background = display.newImageRect("ui/telas/sky.png", display.actualContentWidth, display.actualContentHeight )
+	background.x = w/2 
+	background.y = cY + display.screenOriginY
 
-		local background = display.newImageRect( backGroup, "ui/telas/sky.png", display.actualContentWidth, display.actualContentHeight )
-		background.x = cX 
-		background.y = cY + display.screenOriginY
+	-- Ground
+	local gnd1 = display.newImageRect("ui/telas/street.png", 544, 90)
+    gnd1.x = 0
+    gnd1.y = 275
+    gnd1.speed = speedGround
 
-		local ground = display.newImageRect( backGroup, "ui/telas/street.png", display.actualContentWidth, 90)
-	    ground.x = cX 
-	    ground.y = display.contentHeight-35
+    local gnd2 = display.newImageRect("ui/telas/street.png", 544, 90)
+    gnd2.x = 544 
+    gnd2.y = 275
+    gnd2.speed = speedGround
 
-	    local city1 = display.newImageRect( backGroup, "ui/telas/city1.png", 554, 130 )
-	    city1.x = cX
-	    city1.y = display.contentHeight-145
-	    
-	    local city2 = display.newImageRect( backGroup, "ui/telas/city2.png", 554, 130 )
-	    city2.x = cX+554
-	    city2.y = display.contentHeight-145
+    local cloud1 = display.newImageRect("ui/telas/cloud1.png", 554, 50 )
+    cloud1.x = 0
+    cloud1.y = h/5
+    cloud1.speed = cloudCity
 
-	    function scrollCity(self, event)
-	    	if self.x < -535 then
-	    		self.x = 554
-	    	else
-	    		self.x = self.x -2
-	    	end
-	    end
+    local cloud2 = display.newImageRect("ui/telas/cloud2.png", 554, 50 )
+    cloud2.x = 544
+    cloud2.y = h/5
+    cloud2.speed = cloudCity
 
-	    city1.enterFrame = scrollCity
-	    Runtime:addEventListener( "enterFrame", city1 )
+    local city1 = display.newImageRect("ui/telas/city1.png", 554, 130 )
+    city1.x = cX
+    city1.y = h-148
+    city1.speed = speedCity
+    
+    local city2 = display.newImageRect("ui/telas/city2.png", 554, 130 )
+    city2.x = cX+554
+    city2.y = h-145
+    city2.speed = speedCity
 
-	    city2.enterFrame = scrollCity
-	    Runtime:addEventListener( "enterFrame", city2 )
+    local function moveX( self, event )
+    	if (self.x < -272) then
+    		self.x = 806
+    	else
+    		self.x = self.x - self.speed
+    	end
+    end
 
-	    ground.enterFrame = scrollCity
-	    Runtime:addEventListener( "enterFrame", ground )
+    gnd1.enterFrame = moveX
+    Runtime:addEventListener("enterFrame", gnd1)
+    gnd2.enterFrame = moveX
+    Runtime:addEventListener("enterFrame", gnd2)
+    city1.enterFrame = moveX
+    Runtime:addEventListener("enterFrame", city1)
+    city2.enterFrame = moveX
+    Runtime:addEventListener("enterFrame", city2)
+    cloud1.enterFrame = moveX
+    Runtime:addEventListener("enterFrame", cloud1)
+    cloud2.enterFrame = moveX
+    Runtime:addEventListener("enterFrame", cloud2)
 
+	--local credit = display.newImage("ui/background/credit.png", 130, 40)
+	--credit.x = cX-205
+	--credit.y = cY-130
 
-		local credit = display.newImage("ui/background/credit.png", 130, 40)
-		credit.x = cX-205
-		credit.y = cY-130
-
-		local debit = display.newImage("ui/background/debit.png", 130, 40)
-		debit.x = cX-70
-		debit.y = cY-130
+	--local debit = display.newImage("ui/background/debit.png", 130, 40)
+	--debit.x = cX-70
+	--debit.y = cY-130
 
 
 
