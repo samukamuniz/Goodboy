@@ -29,7 +29,7 @@ function scene:create( event )
     local jumpLimit = 0 
     local dead = false
     local speedCity = 1
-    local speedGround = 3
+    local speedGround = 2
     local cloudCity = 0.5
     physics.start()  -- Temporarily pause the physics engine
 
@@ -39,16 +39,20 @@ function scene:create( event )
 	background.y = cY + display.screenOriginY
 
 	-- Ground
-	local gnd1 = display.newImageRect("ui/telas/street.png", 544, 90)
+	local gnd1 = display.newImageRect("ui/telas/street.png", 560, 90)
     gnd1.x = 0
     gnd1.y = 275
+    physics.addBody( gnd1, "static" )
     gnd1.speed = speedGround
+    
 
-    local gnd2 = display.newImageRect("ui/telas/street.png", 544, 90)
+    local gnd2 = display.newImageRect("ui/telas/street.png", 560, 90)
     gnd2.x = 544 
     gnd2.y = 275
+    physics.addBody( gnd2, "static" )
     gnd2.speed = speedGround
 
+    -- Cloud
     local cloud1 = display.newImageRect("ui/telas/cloud1.png", 554, 50 )
     cloud1.x = 0
     cloud1.y = h/5
@@ -59,6 +63,7 @@ function scene:create( event )
     cloud2.y = h/5
     cloud2.speed = cloudCity
 
+    -- City
     local city1 = display.newImageRect("ui/telas/city1.png", 554, 130 )
     city1.x = cX
     city1.y = h-148
@@ -69,6 +74,42 @@ function scene:create( event )
     city2.y = h-145
     city2.speed = speedCity
 
+    -- Credit and Debit
+	local credit = display.newImage("ui/background/credit.png", 130, 40)
+	credit.x = cX-205
+	credit.y = cY-130
+
+	local debit = display.newImage("ui/background/debit.png", 130, 40)
+	debit.x = cX-70
+	debit.y = cY-130
+
+	local buttons = {}
+
+	buttons[1] = display.newImage("ui/background/up.png", 50, 50)
+	buttons[1].x = 50 
+	buttons[1].y = cY+127
+	buttons[1].myName = "up" 
+
+	buttons[2] = display.newImage("ui/background/up.png", 50, 50)
+	buttons[2].x = 510 
+	buttons[2].y = cY+127
+	buttons[2].myName = "jumpBoy"
+
+	local ten = display.newImage("ui/elements/ten.png", 50, 50)
+	ten.x = 554
+	ten.y = 180
+	physics.addBody( ten, "kinematic", {density=1.0, friction=0.5, bounce=0.3} )
+	ten:setLinearVelocity(-150,0)
+
+	local twenty = display.newImage("ui/elements/twenty.png", 50, 50)
+	twenty.x = 250
+	twenty.y = 100
+	physics.addBody( twenty, "kinematic", {density=1.0, friction=0.5, bounce=0.3} )
+	twenty:setLinearVelocity(-150,0)
+
+
+
+    -- Function for move all elements on Display
     local function moveX( self, event )
     	if (self.x < -272) then
     		self.x = 806
@@ -90,74 +131,46 @@ function scene:create( event )
     cloud2.enterFrame = moveX
     Runtime:addEventListener("enterFrame", cloud2)
 
-	--local credit = display.newImage("ui/background/credit.png", 130, 40)
-	--credit.x = cX-205
-	--credit.y = cY-130
+    -- Score
+    livesText = display.newText( "$ ".. lives, 50, 29, "RifficFree-Bold.ttf", 20)
+    livesText:setFillColor( 0, 255, 0 )
+    moneyText = display.newText( "$ ".. money, 190, 29, "RifficFree-Bold.ttf", 20)
+    moneyText:setFillColor( 255, 0, 0  )
 
-	--local debit = display.newImage("ui/background/debit.png", 130, 40)
-	--debit.x = cX-70
-	--debit.y = cY-130
+    -- Load the Sprite
+
+	local sheetData = {
+	    width=69;               --Largura Sprite
+	    height=90;              --Altura Sprite
+	    numFrames=10;            --Número de Frames
+	    sheetContentWidth=345,  --Largura da Folha de Sprites
+	    sheetContentHeight=180   --Altura da Folha de Sprites
+	    -- 1 to 6 corre
+	    -- 7 to 10 pula
+	}
+
+	local sequenceData = {
+	    { name = "run", start=1, count=6, time=800},
+	    { name = "jump", start=7, count=10, time=1000}
+	}
+
+	local mySheet = graphics.newImageSheet( "ui/sprite/sprite_boy2.png", sheetData )
+
+	local animation = display.newSprite( mySheet, sequenceData )
+	animation.x = cX-150
+	animation.y = cY+100
+
+	animation.timeScale = 1.2
+	animation:setSequence( "run" )
+	animation:play( )
+
+	local function onTouch( event )
+		
+	end
+	Runtime:addEventListener("touch", onTouch)
 
 
-
-
-
-
-
-	    -- Score
-	    livesText = display.newText( "$ ".. lives, 50, 28, native.systemFont, 20)
-	    livesText:setFillColor( 0, 0, 0 )
-	    moneyText = display.newText( "$ ".. money, 190, 28, native.systemFont, 20)
-	    moneyText:setFillColor( 0, 0, 0  )
-
-	    -- Credits
-	    local ten = display.newImageRect( "ui/elements/10.png", 50, 50 )
-	    ten.x = cX
-	    ten.y = cY+70
-	    ten.speed = math.random(2,8)
-	    ten.initY = ten.y
-	    ten.amp   = math.random(20,100)
-	    ten.angle = math.random(20,100)
-	    ten.name = "ten"
-
-	    local twenty = display.newImageRect( "ui/elements/20.png", 50, 50 )
-	    twenty.x = cX
-	    twenty.y = cY
-	    twenty.speed = math.random(2,8)
-	    twenty.initY = twenty.y
-	    twenty.amp   = math.random(20,100)
-	    twenty.angle = math.random(20,100)
-	    twenty.name = "twenty"
-
-
-	    -- Load the Sprite
-
-		local sheetData = {
-		    width=69;               --Largura Sprite
-		    height=90;              --Altura Sprite
-		    numFrames=10;            --Número de Frames
-		    sheetContentWidth=345,  --Largura da Folha de Sprites
-		    sheetContentHeight=180   --Altura da Folha de Sprites
-		    -- 1 to 6 corre
-		    -- 7 to 10 pula
-		}
-
-		local sequenceData = {
-		    { name = "run", start=1, count=6, time=800},
-		    { name = "jump", start=7, count=10, time=1000}
-		}
-
-		local mySheet = graphics.newImageSheet( "ui/sprite/sprite_boy2.png", sheetData )
-
-		local animation = display.newSprite( mySheet, sequenceData )
-		animation.x = cX-150
-		animation.y = cY+100
-
-		animation.timeScale = 1.0
-		animation:setSequence( "run" )
-		animation:play( )
-
-		-- End the Sprite
+	-- End the Sprite
 end
 
 function scene:show( event )
