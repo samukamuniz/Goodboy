@@ -7,6 +7,11 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local physics = require( "physics" )
+physics.start()
+--physics.setGravity( 0, 0 )
+
+-- Seed the random number generator
+math.randomseed( os.time() )
 
 -- Coordenadas e Anchor Points
 local cX = display.contentCenterX -- Coordenada X
@@ -38,10 +43,6 @@ function scene:create( event )
 	background.x = w/2 
 	background.y = cY + display.screenOriginY
 
-    --Shape
-    local base = display.newRect( w/2, h-15, 600, 25 )
-    base:setFillColor( 0.5 )
-    physics.addBody( base, "static" )
 
 	-- Ground
 	local gnd1 = display.newImageRect("ui/telas/street.png", 560, 90)
@@ -53,6 +54,11 @@ function scene:create( event )
     gnd2.x = 544 
     gnd2.y = 275
     gnd2.speed = speedGround
+
+        --Shape
+    local base = display.newRect( w/2, h-15, 600, 25 )
+    base:setFillColor( 0.5 )
+    physics.addBody( base, "static", {bounce = 0})
 
     -- Cloud
     local cloud1 = display.newImageRect("ui/telas/cloud1.png", 554, 50 )
@@ -86,36 +92,6 @@ function scene:create( event )
 	local debit = display.newImage("ui/background/debit.png", 130, 40)
 	debit.x = cX-70
 	debit.y = cY-130
-
-    -- Declarando os botões
-
-	local buttons = {}
-
-	buttons[1] = display.newImage("ui/background/up.png", 50, 50)
-	buttons[1].x = 50 
-	buttons[1].y = cY+127
-	buttons[1].myName = "up" 
-
-	buttons[2] = display.newImage("ui/background/up.png", 50, 50)
-	buttons[2].x = 510 
-	buttons[2].y = cY+127
-	buttons[2].myName = "jumpBoy"
-
-
-    -- Declarando o dinheiro
-
-	local ten = display.newImage("ui/elements/ten.png", 50, 50)
-	ten.x = 554
-	ten.y = 180
-	physics.addBody( ten, "kinematic", {density=1.0, friction=0.5, bounce=0.3} )
-	ten:setLinearVelocity(-150,0)
-
-	local twenty = display.newImage("ui/elements/twenty.png", 50, 50)
-	twenty.x = 250
-	twenty.y = 100
-	physics.addBody( twenty, "kinematic", {density=1.0, friction=0.5, bounce=0.3} )
-	twenty:setLinearVelocity(-150,0)
-
 
     -- Function for move all elements on Display
 
@@ -168,27 +144,38 @@ function scene:create( event )
 
 	local mySheet = graphics.newImageSheet( "ui/sprite/sprite_boy2.png", sheetData )
 
-	local playBoy = display.newSprite( mySheet, sequenceData )
+    -- Declarando o dinheiro
+
+    local ten = display.newImageRect("ui/elements/ten.png", 50, 50)
+    ten.x = 554
+    ten.y = 180
+    ten.myName = "ten"
+    physics.addBody( ten, "kinematic", {density=1.0, friction=0.5, bounce=0.3, isSensor=true, radius=50 } )
+    ten:setLinearVelocity(-150,0)
+
+	local playBoy = display.newSprite( mySheet, sequenceData)
 	playBoy.x = cX-150
 	playBoy.y = cY+100
+    playBoy.myName = "playBoy"
+    physics.addBody( playBoy, "dynamic", { density = 0, friction = 0, bounce = 0.3, gravity = 0,
+                                        radius=40, isSensor=false } )
+    playBoy:setSequence( "run" )
+    playBoy:play( )
 
-    --# FIM SPRITE
 
-    -- Executando Sprite
-	--playBoy.timeScale = 1.2
-	playBoy:setSequence( "run" )
-	playBoy:play( )
 
 
     -- Função de Pulo
     local function onTouch(event)
     if(event.phase == "began") then
         jumpLimit = jumpLimit + 1
-        if jumpLimit < 5 then
+        if jumpLimit < 2 then
           physics.addBody(playBoy, "dynamic", { density = 0.015, friction = 0, bounce = 0.055, gravity = 0 })
           playBoy:applyLinearImpulse(0, 1, playBoy.x, playBoy.y)
+          playBoy:setSequence( "jump" )
         end
-     jumpLimit = 0
+        playBoy:setSequence( "run" )
+     jumpLimit = 1
     end
     end
     Runtime:addEventListener("touch", onTouch)
