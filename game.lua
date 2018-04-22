@@ -24,7 +24,7 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	local lives = 6
+	local lives = 3
     local money = 0
     local jumpLimit = 0 
     local dead = false
@@ -38,18 +38,20 @@ function scene:create( event )
 	background.x = w/2 
 	background.y = cY + display.screenOriginY
 
+    --Shape
+    local base = display.newRect( w/2, h-15, 600, 25 )
+    base:setFillColor( 0.5 )
+    physics.addBody( base, "static" )
+
 	-- Ground
 	local gnd1 = display.newImageRect("ui/telas/street.png", 560, 90)
     gnd1.x = 0
     gnd1.y = 275
-    physics.addBody( gnd1, "static" )
     gnd1.speed = speedGround
     
-
     local gnd2 = display.newImageRect("ui/telas/street.png", 560, 90)
     gnd2.x = 544 
     gnd2.y = 275
-    physics.addBody( gnd2, "static" )
     gnd2.speed = speedGround
 
     -- Cloud
@@ -74,6 +76,8 @@ function scene:create( event )
     city2.y = h-145
     city2.speed = speedCity
 
+    -- Elementos contadores
+
     -- Credit and Debit
 	local credit = display.newImage("ui/background/credit.png", 130, 40)
 	credit.x = cX-205
@@ -82,6 +86,8 @@ function scene:create( event )
 	local debit = display.newImage("ui/background/debit.png", 130, 40)
 	debit.x = cX-70
 	debit.y = cY-130
+
+    -- Declarando os botões
 
 	local buttons = {}
 
@@ -94,6 +100,9 @@ function scene:create( event )
 	buttons[2].x = 510 
 	buttons[2].y = cY+127
 	buttons[2].myName = "jumpBoy"
+
+
+    -- Declarando o dinheiro
 
 	local ten = display.newImage("ui/elements/ten.png", 50, 50)
 	ten.x = 554
@@ -108,8 +117,8 @@ function scene:create( event )
 	twenty:setLinearVelocity(-150,0)
 
 
-
     -- Function for move all elements on Display
+
     local function moveX( self, event )
     	if (self.x < -272) then
     		self.x = 806
@@ -117,6 +126,8 @@ function scene:create( event )
     		self.x = self.x - self.speed
     	end
     end
+
+    --Chamando a função para mover os elementos
 
     gnd1.enterFrame = moveX
     Runtime:addEventListener("enterFrame", gnd1)
@@ -137,6 +148,7 @@ function scene:create( event )
     moneyText = display.newText( "$ ".. money, 190, 29, "RifficFree-Bold.ttf", 20)
     moneyText:setFillColor( 255, 0, 0  )
 
+    --#SPRITES
     -- Load the Sprite
 
 	local sheetData = {
@@ -156,21 +168,30 @@ function scene:create( event )
 
 	local mySheet = graphics.newImageSheet( "ui/sprite/sprite_boy2.png", sheetData )
 
-	local animation = display.newSprite( mySheet, sequenceData )
-	animation.x = cX-150
-	animation.y = cY+100
+	local playBoy = display.newSprite( mySheet, sequenceData )
+	playBoy.x = cX-150
+	playBoy.y = cY+100
 
-	animation.timeScale = 1.2
-	animation:setSequence( "run" )
-	animation:play( )
+    --# FIM SPRITE
 
-	local function onTouch( event )
-		
-	end
-	Runtime:addEventListener("touch", onTouch)
+    -- Executando Sprite
+	--playBoy.timeScale = 1.2
+	playBoy:setSequence( "run" )
+	playBoy:play( )
 
 
-	-- End the Sprite
+    -- Função de Pulo
+    local function onTouch(event)
+    if(event.phase == "began") then
+        jumpLimit = jumpLimit + 1
+        if jumpLimit < 5 then
+          physics.addBody(playBoy, "dynamic", { density = 0.015, friction = 0, bounce = 0.055, gravity = 0 })
+          playBoy:applyLinearImpulse(0, 1, playBoy.x, playBoy.y)
+        end
+     jumpLimit = 0
+    end
+    end
+    Runtime:addEventListener("touch", onTouch)
 end
 
 function scene:show( event )
