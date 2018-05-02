@@ -9,12 +9,18 @@ display.setStatusBar( display.HiddenStatusBar )
 
 -- include the Corona "composer" module
 local composer = require "composer"
+local level = require("leveltemplate")
 
--- Seed the random number generator
---math.randomseed( os.time() )
+-- REMOVE 'BOTTOM BAR' NO ANDROID 
+if system.getInfo( "androidApiLevel" ) and system.getInfo( "androidApiLevel" ) < 19 then
+  native.setProperty( "androidSystemUiVisibility", "lowProfile" )
+else
+  native.setProperty( "androidSystemUiVisibility", "immersiveSticky" ) 
+end
 
--- Reserve channel 1 for background music
---audio.reserveChannels( 1 )
---audio.setVolume( 0.3, { channel=1 } )
--- Go to the menu screen
-composer.gotoScene( "game" )
+function main()
+	composer.gotoScene( "scene.levelOne", { params={ } } )
+end
+
+-- VAI PARA O MENU
+main()

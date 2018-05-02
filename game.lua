@@ -13,6 +13,8 @@ physics.start()
 -- Seed the random number generator
 math.randomseed( os.time() )
 
+local moneysTable = {}
+
 -- Coordenadas e Anchor Points
 local cX = display.contentCenterX -- Coordenada X
 local cY = display.contentCenterY -- Coordenada Y
@@ -41,7 +43,7 @@ function scene:create( event )
     --Background
 	local background = display.newImageRect("ui/telas/sky.png", display.actualContentWidth, display.actualContentHeight )
 	background.x = w/2 
-	background.y = cY + display.screenOriginY
+	background.y = cY + display.screenOriginY --ok
 
 
 	-- Ground
@@ -84,7 +86,7 @@ function scene:create( event )
 
     -- Elementos contadores
 
-    -- Credit and Debit
+    --[[ Credit and Debit
 	local credit = display.newImage("ui/background/credit.png", 130, 40)
 	credit.x = cX-205
 	credit.y = cY-130
@@ -92,7 +94,7 @@ function scene:create( event )
 	local debit = display.newImage("ui/background/debit.png", 130, 40)
 	debit.x = cX-70
 	debit.y = cY-130
-
+    ]]
     -- Function for move all elements on Display
 
     local function moveX( self, event )
@@ -145,14 +147,14 @@ function scene:create( event )
 	local mySheet = graphics.newImageSheet( "ui/sprite/sprite_boy2.png", sheetData )
 
     -- Declarando o dinheiro
-
+    --[[
     local ten = display.newImageRect("ui/elements/ten.png", 50, 50)
     ten.x = 554
     ten.y = 180
     ten.myName = "ten"
     physics.addBody( ten, "kinematic", {density=1.0, friction=0.5, bounce=0.3, isSensor=true, radius=50 } )
     ten:setLinearVelocity(-150,0)
-
+]]
 	local playBoy = display.newSprite( mySheet, sequenceData)
 	playBoy.x = cX-150
 	playBoy.y = cY+100
@@ -162,8 +164,67 @@ function scene:create( event )
     playBoy:setSequence( "run" )
     playBoy:play( )
 
+    -- 23/04/2018 (Adicionando)
+    local function createMoney()
+        local newTen = display.newImageRect("ui/elements/ten.png", 50, 50)
+        table.insert(moneysTable, newTen)
+        physics.addBody( newTen, "kinematic", { density = 0, friction = 0, bounce = 0, gravity = 0,
+                                        radius=50, isSensor=true } )
+        newTen.myName = "moneyTen"
+
+        local newTwenty = display.newImageRect("ui/elements/twenty.png", 50, 50)
+        table.insert(moneysTable, newTwenty)
+        physics.addBody( newTwenty, "kinematic", { density = 0, friction = 0, bounce = 0, gravity = 0,
+                                        radius=50, isSensor=true } )
+        newTwenty.myName = "moneyTwenty"
+
+        local newFifty = display.newImageRect("ui/elements/fifty.png", 50, 50)
+        table.insert(moneysTable, newFifty)
+        physics.addBody( newFifty, "kinematic", { density = 0, friction = 0, bounce = 0, gravity = 0,
+                                        radius=50, isSensor=true } )
+        newFifty.myName = "moneyFifty"
 
 
+        local whereFrom = math.random( 1,3 )
+            if ( whereFrom == 1 ) then
+                -- From the left
+                newTen.x = 600
+                newTen.y = 130
+                newTen:setLinearVelocity( -100, 0 )
+            elseif ( whereFrom == 2 ) then
+                -- From the top
+                newTwenty.x = 600
+                newTwenty.y = 130
+                newTwenty:setLinearVelocity( -100, 0 )
+            elseif ( whereFrom == 3 ) then
+                -- From the right
+                newFifty.x = 600
+                newFifty.y = 100
+                newFifty:setLinearVelocity( -100, 0 )
+            end
+        --newMoney:applyTorque( math.random( -6,6 ) )
+    end
+
+    local function gameLoop()
+     -- Create new money
+    createMoney()
+        -- Remove asteroids which have drifted off screen
+        for i = #moneysTable, 1, -1 do
+            local thisMoney = moneysTable[i]
+     
+            if ( thisMoney.x < -554 or
+                 thisMoney.x > display.contentWidth + 100 or
+                 thisMoney.y < -100 or
+                 thisMoney.y > display.contentHeight + 100 )
+            then
+                display.remove( thisMoney )
+                table.remove( moneysTable, i )
+            end
+        end
+    end
+
+
+    gameLoopTimer = timer.performWithDelay( 1000, gameLoop, 0.4  )
 
     -- Função de Pulo
     local function onTouch(event)
