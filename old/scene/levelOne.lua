@@ -20,7 +20,6 @@ function scene:create( event )
 	local sceneGroup = self.view
 	level:setCurrentLevel(1)				--Seta o nível atual
 
-
 	--CRIA O BACKGROUND
 	background = level:createBackground(level:getCurrentLevel()) --Adc o background relativo ao level
 	backGroup:insert(background)	-- coloca o backround no backgroup bg1
