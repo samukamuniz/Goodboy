@@ -1,14 +1,6 @@
------------------------------------------------------------------------------------------
---
--- main.lua
---
------------------------------------------------------------------------------------------
 
--- hide the status bar
-display.setStatusBar( display.HiddenStatusBar )
-
--- include the Corona "composer" module
 local composer = require "composer"
+--local loadsave = require( "loadsave")
 local level = require("leveltemplate")
 
 -- REMOVE 'BOTTOM BAR' NO ANDROID 
@@ -18,9 +10,25 @@ else
   native.setProperty( "androidSystemUiVisibility", "immersiveSticky" ) 
 end
 
-function main()
-	composer.gotoScene( "scene.levelOne", { params={ } } )
+--[[loadedSettings = loadsave.loadTable("settings.json")
+if loadedSettings == nil then
+	settings = {}
+	settings.soundOn = true
+	settings.musicOn = true
+	loadsave.saveTable( settings, "settings.json")
+	loadedSettings = loadsave.loadTable("settings.json")
 end
 
--- VAI PARA O MENU
-main()
+if(loadedSettings.musicOn == true) then
+	audio.setVolume( 0.75, { channel=1 } )
+else
+	audio.setVolume( 0, { channel=1 } )
+end
+]]
+
+function game()
+	--composer.gotoScene( "scene.menu", { params={ } } )
+	composer.gotoScene( "scene.level1", { params={ } } )
+end
+
+game()

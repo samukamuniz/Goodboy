@@ -9,8 +9,8 @@ settings =
 	{
 		-- Supported values for orientation:
 		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
-		default = "landscapeLeft",		 					--Orientação inicial de lançamento
-		supported = {  "landscapeLeft", "landscapeRight", }, 	--Tabela de opções permitidas para orientação automática
+		default = "landscapeLeft",
+		supported = {  "landscapeLeft", "landscapeRight", },
 	},
 
 	--
@@ -38,7 +38,7 @@ settings =
 	excludeFiles =
 	{
 		-- Exclude unnecessary files for each platform
-		all = { "Icon.png", "Icon-*dpi.png", "Images.xcassets", },
-		android = { "LaunchScreen.storyboardc", },
+		ios = { "Icon.png", "Icon-*dpi.png", },
+		android = { "icons/Icon.png", "icons/Icon-??.png", "icons/Icon-???.png", "LaunchScreen.storyboardc", },
 	},
 }
