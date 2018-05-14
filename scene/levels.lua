@@ -14,15 +14,11 @@ local function handleLevelSelect( event )
 		myData.settings.currentLevel = event.target.id
 		audio.stop(1)
 		if(event.target.id == '1') then
-			composer.gotoScene( "scene.babyLevel", { effect="crossFade", time=333 } )
+			composer.gotoScene( "scene.level1", { effect="crossFade", time=333 } )
 		elseif ( event.target.id == '2') then
-			composer.gotoScene( "scene.childLevel", { effect="crossFade", time=333 } )
-		elseif ( event.target.id == '3') then
-			composer.gotoScene( "scene.youngLevel", { effect="crossFade", time=333 } )
-		elseif ( event.target.id == '4') then
-			composer.gotoScene( "scene.adultLevel", { effect="crossFade", time=333 } )
+			composer.gotoScene( "scene.level1", { effect="crossFade", time=333 } )
 		else
-			composer.gotoScene( "scene.oldLevel", { effect="crossFade", time=333 } )
+			composer.gotoScene( "scene.level1", { effect="crossFade", time=333 } )
 		end		
 	end
 end
@@ -65,7 +61,7 @@ function scene:create( event )
 			id = tostring(i),
 			width = 50,
 			height = 33,
-			defaultFile = "ui/pause/resumebtn.png",
+			defaultFile = "ui/button/btnPause.png",
 			onEvent = handleLevelSelect,
 		})			
 
@@ -111,7 +107,7 @@ function scene:create( event )
 	levelSelectGroup.x = display.contentCenterX
 	levelSelectGroup.y = display.contentCenterY
 	
-	local doneButton = display.newImageRect( sceneGroup, "ui/menu/backbtn.png", 150, 50 )
+	local doneButton = display.newImageRect( sceneGroup, "ui/background/backbtn.png", 150, 50 )
 	doneButton.x = display.contentCenterX + 200
 	doneButton.y = 40
 	doneButton:addEventListener( "tap", handleCancelButtonEvent)
