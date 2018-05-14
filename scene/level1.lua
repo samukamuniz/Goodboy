@@ -2,7 +2,7 @@
 local composer = require("composer") 	 	--Importa o Composer
 local physics = require("physics") 		 	--Importa a Fisica
 
---local sounds = require( "soundsfile" )	 	--Importa o Som
+local sounds = require( "soundsfile" )	 	--Importa o Som
 
 local level = require("leveltemplate")		--Importa o aqruivo leveltemplate.lua
 local scene = composer.newScene()			-- Cria uma nova cena pelo Composer
@@ -28,14 +28,8 @@ function scene:create( event )
 	player = level:createPlayer("ui/sprite/sprite_boy.png", "running")
 	mainGroup:insert(player) -- OK
 
-	level:setValues(100,100,100,0)		
+	level:setValues(1,100,0)		
 		
-	--[[local numShoots = level:createScoreProjectiles() --Qtd de tiros
-	uiGroup:insert(numShoots)
-	
-	local age = level:createScoreAge()
-	uiGroup:insert(age)]]
-
 	physics.start()		
 	
 	local floor = level:createFloor("ui/background/ground1.png")
@@ -49,7 +43,7 @@ function scene:create( event )
 		local aux = math.random(0, 10)
 
 		if aux <= 6 then
-			obstacle = level:createObstacle(level:getCurrentLevel())
+			obstacle = level:createInvoices(level:getCurrentLevel())
 			mainGroup:insert(obstacle)
 		else
 			collectible = level:createCollectible(level:getCurrentLevel())
@@ -71,22 +65,28 @@ function scene:create( event )
 
 	local function playerCollision( self, event )
 		
-		if(event.other.name == "GROUND") then	
+		if(event.other.name == "CHAO") then	
 			jumpLimit = 0
 		end
 
-		if( event.other.name == "RECEITAS") then
-			--playSFX(bubblepop)
+		-- AQUI EU GANHO DINHEIRO
+		if( event.other.name == "WINS") then
+			--playSFX(money)
 
-			if event.other.type == "health" then
-				level:addDebit(1)
+			if event.other.type == "10" then
+				level:addCredit(10)
 			end
-			if event.other.type == "shoot" then
-				level:addBonusIncomes(5)
+			if event.other.type == "20" then
+				level:addCredit(20)
 			end
-			--level:addAge()
-
-			level:collideIncomes()
+			if event.other.type == "50" then
+				level:addCredit(50)
+			end
+			if event.other.type == "100" then
+				level:addCredit(100)
+			end
+			
+			level:collideCollectible()
 			timer.performWithDelay(1, function()
 				event.other.alpha = 0
 		        event.other = nil
@@ -95,11 +95,21 @@ function scene:create( event )
 			
 		end
 
-		if( event.other.name == "OBSTACLE") then
-			--playSFX(losesound)
+		-- AQUI EU PERCO DINHEIRO
+		if( event.other.name == "BILLS") then
+			--playSFX(money)
 			
-			level:reduceDebit(10)			
-			level:collideObstacle()
+			if ( event.other.type == "drug") then
+				level:addDebit(50)
+				level:reduceCredit(50)
+			end
+
+			if ( event.other.type == "lotery") then
+				level:addDebit(100)
+				level:reduceCredit(100)
+			end
+		
+			level:collideInvoices()
 			if level:isAlive() then
 				timer.performWithDelay(1, function()
 					event.other.alpha = 0
@@ -113,7 +123,7 @@ function scene:create( event )
 	end
 	player.collision = playerCollision
 	player:addEventListener("collision")
-
+	--[[
 	function goToNextLevel()
 		timer.performWithDelay(500, function()
 			--playSFX(lvlupsound)			
@@ -154,7 +164,7 @@ function scene:create( event )
 			player:setSequence("normalRun")
 			player:play()
 		end)
-	end
+	end]]
 
 	jumpbtn = display.newImageRect("ui/button/up.png", 60, 60)
 	jumpbtn.x = 50
@@ -184,63 +194,8 @@ function scene:create( event )
 	end
 	jumpbtn:addEventListener("touch", jumpbtn)
 	uiGroup:insert(jumpbtn)
-
-	--[[shootbtn = display.newImageRect("ui/button/play.png", 60, 60)
-	shootbtn.x = display.contentWidth 
-	shootbtn.y = display.contentHeight - 35
-
-	local function shootCollision( self, event )
 		
-		if( event.other.name == "RECEITAS") then
-			level:addHealth(1)
-			level:addAge()
-
-			level:collideIncomes()
-			timer.performWithDelay(1, function()
-				event.other.alpha = 0
-		        event.other = nil
-		    end, 1)
-			event.other:removeSelf();
-			event.target:removeSelf();
-			
-			if(level:getYears() == 5) then
-				goToNextLevel()	
-			end
-		end
-
-		if( event.other.name == "OBSTACLE") then
-			level:collideInvoices()
-			timer.performWithDelay(1, function()
-				event.other.alpha = 0
-				event.other = nil
-			end, 1)
-			event.other:removeSelf();
-			event.target:removeSelf();	    	
-		end
-	end
-
-	function shootbtn:touch(event)	
-		if(event.phase == "began") then
-			if(level:getNumProjectiles()  > 0) then
-				local projectile = display.newImageRect("ui/baby/bear.png", 30, 30 )
-				projectile.x = player.x
-				projectile.y = player.y
-				physics.addBody(projectile, 'dynamic')
-				projectile.gravityScale = 0
-				projectile.isSensor = true
-				projectile.name = "PROJECTILE"
-				projectile:setLinearVelocity( 150, 0 )
-				projectile.collision = shootCollision
-				projectile:addEventListener("collision")
-				mainGroup:insert(projectile)
-				level:reduceProjectiles(1)													
-			end
-		end
-	end	
-	shootbtn:addEventListener("touch", shootbtn)
-	uiGroup:insert(shootbtn)]]
-		
-	local header = level:buildHeader(true, true, true, true)
+	local header = level:buildHeader(true, true, true)
 	uiGroup:insert(header)
 
 	level:buildPause(player)

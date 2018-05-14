@@ -21,19 +21,19 @@ local base = {}
             base.levels[1].numCollectibles = 4
 
                 base.levels[1].collectibles[1]={}
-                base.levels[1].collectibles[1].type = "health"
+                base.levels[1].collectibles[1].type = "10"
                 base.levels[1].collectibles[1].path = "ui/elements/ten.png"
 
                 base.levels[1].collectibles[2]={}
-                base.levels[1].collectibles[2].type = "health"
+                base.levels[1].collectibles[2].type = "20"
                 base.levels[1].collectibles[2].path = "ui/elements/twenty.png"
 
                 base.levels[1].collectibles[3]={}
-                base.levels[1].collectibles[3].type = "health"
+                base.levels[1].collectibles[3].type = "50"
                 base.levels[1].collectibles[3].path = "ui/elements/fifty.png"
 
                 base.levels[1].collectibles[4]={}
-                base.levels[1].collectibles[4].type = "shoot"
+                base.levels[1].collectibles[4].type = "100"
                 base.levels[1].collectibles[4].path = "ui/elements/oneHundred.png"
 
 
@@ -41,11 +41,11 @@ local base = {}
             base.levels[1].numObstacles = 2
             
                 base.levels[1].obstacles[1] = {}
-                base.levels[1].obstacles[1].type = "health"
+                base.levels[1].obstacles[1].type = "drug"
                 base.levels[1].obstacles[1].path = "ui/elements/drug.png"
 
                 base.levels[1].obstacles[2] = {}
-                base.levels[1].obstacles[2].type = "health"
+                base.levels[1].obstacles[2].type = "lotery"
                 base.levels[1].obstacles[2].path = "ui/elements/lotery.png"
 
 return base

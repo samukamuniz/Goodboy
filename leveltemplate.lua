@@ -1,6 +1,6 @@
 local composer = require("composer")
 local base = require( "base")
---local sounds = require( "soundsfile" )
+local sounds = require( "soundsfile" )
 
 local lvl = {} 
 local uiGroup = display.newGroup()
@@ -10,16 +10,8 @@ local background
 local backgroundnear1
 local backgroundnear2
 
-local healthText
-local health = 0
-local happinessText
-local happiness = 0
-local money = 0
-local moneyText
-
-
 local credit = 0	--Credit
-local debit = 0		--Debit
+local debit = 0	--Debit
 local life = 0		--Vidas
 local score = 0
 
@@ -144,7 +136,7 @@ function lvl:buildHeader(debitBoolean, lifeBoolean, creditBoolean) --Faixa la em
 	headerGroup = display.newGroup()
 
 	if(debitBoolean == true) then
-		debitText = display.newText("Debit: $ ".. debit, 0, 0, "RifficFree-Bold.ttf", 20)
+		debitText = display.newText("Bills: $ ".. debit, 0, 0, "RifficFree-Bold.ttf", 20)
 		debitText.x = 45
 		debitText.y = 25
 		headerGroup:insert(debitText)
@@ -158,30 +150,17 @@ function lvl:buildHeader(debitBoolean, lifeBoolean, creditBoolean) --Faixa la em
 	end
 
 	if(lifeBoolean == true) then
-		life = display.newText("Life: $ ".. life, 0, 0, "RifficFree-Bold.ttf", 20)
-		life.x = 350
-		life.y = 25
-		headerGroup:insert(life)
+		lifeText = display.newText("Life: ".. life, 0, 0, "RifficFree-Bold.ttf", 20)
+		lifeText.x = 350
+		lifeText.y = 25
+		headerGroup:insert(lifeText)
 	end
 
 	return headerGroup
 end
 
---[[function lvl:createScoreProjectiles()
-	numShoots = display.newText("teste" .. qtdBonusIncomes, 0, 0, "RifficFree-Bold.ttf", 30)
-	numShoots.x = display.contentCenterX + 180
-	numShoots.y = display.contentHeight-20
-	uiGroup:insert(numShoots)
-	return numShoots
-end]]
-
 function lvl:addBonusIncomes(score)
 	qtdBonusIncomes = qtdBonusIncomes + score
-	numShoots.text = "x" .. qtdBonusIncomes	
-end
-
-function lvl:reduceProjectiles(score)
-	qtdBonusIncomes = qtdBonusIncomes - score
 	numShoots.text = "x" .. qtdBonusIncomes	
 end
 
@@ -191,11 +170,6 @@ end
 
 function lvl:addDebit(score)
 	debit = debit + score
-	debitText.text = "Debit: $ ".. debit
-end
-
-function lvl:reduceDebit(score)
-	debit = debit - score
 	debitText.text = "Debit: $ ".. debit
 end
 
@@ -216,28 +190,30 @@ end
 
 function lvl:reducelife(score)
 	life = life - score
-	life.text = "Life: $ ".. life
+	lifeText.text = "Life: $ ".. life
 end
 
 function lvl:isAlive()
-	if( health>0 and happiness>0 and money>0) then
+	if( credit>=0) then
+		return true
+	elseif (life > 0) then
+		lvl:reducelife(1)
 		return true
 	else
 		return false
 	end
 end
 
-function lvl:setValues(healthValue, moneyValue, happinessValue, weddingValue)
-	health = healthValue
-	money = moneyValue
-	happiness = happinessValue
-	--wedding = weddingValue
+function lvl:setValues(lifeValue, creditValue, debitValue)
+	life = lifeValue
+	credit = creditValue
+	debit = debitValue
 end
 
 function lvl:createBackground(currentLevel)
 	local backGroup = display.newGroup()
 
-	background = display.newImageRect(backGroup, base.levels[currentLevel].background, 600, 250 )
+	background = display.newImageRect(backGroup, base.levels[currentLevel].background, display.actualContentWidth, display.actualContentHeight )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 	backGroup:insert(background) --OK
@@ -331,7 +307,7 @@ function lvl:moveFloor(blocks)
 	end
 end
 
-function lvl:createObstacle(currentLevel)
+function lvl:createInvoices(currentLevel)
 
 	local yVal = math.random(100, display.contentHeight-80)
 	local numObst = math.random(1, base.levels[currentLevel].numObstacles)
@@ -339,9 +315,9 @@ function lvl:createObstacle(currentLevel)
 	obstacles[obstaclesCounter] = display.newImageRect(base.levels[currentLevel].obstacles[numObst].path, 55, 55)
 	obstacles[obstaclesCounter].x = display.contentWidth + 50
 	obstacles[obstaclesCounter].y = yVal
-	obstacles[obstaclesCounter].name = "OBSTACLE"
+	obstacles[obstaclesCounter].name = "BILLS"
 	obstacles[obstaclesCounter].id = obstaclesCounter
-	obstacles[obstaclesCounter].type = base.levels[currentLevel].obstacles[numObst].type		
+	obstacles[obstaclesCounter].type = base.levels[currentLevel].obstacles[numObst].type	
 	physics.addBody(obstacles[obstaclesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
 	obstaclesCounter = obstaclesCounter + 1
 	return obstacles[obstaclesCounter - 1]
@@ -366,7 +342,7 @@ function lvl:collideCollectible()
 	obstaclesDisappear = obstaclesDisappear + 1
 end
 
-function lvl:collideObstacle()
+function lvl:collideInvoices()
 	obstaclesDisappear = obstaclesDisappear + 1
 end
 
@@ -378,7 +354,7 @@ function lvl:createCollectible(currentLevel)
 	collectibles[collectiblesCounter] = display.newImageRect(base.levels[currentLevel].collectibles[numColl].path, 55, 55)
 	collectibles[collectiblesCounter].x = display.contentWidth + 50
 	collectibles[collectiblesCounter].y = yVal
-	collectibles[collectiblesCounter].name = "COLECIONAVEL"	
+	collectibles[collectiblesCounter].name = "WINS"	
 	collectibles[collectiblesCounter].type = base.levels[currentLevel].collectibles[numColl].type
 	collectibles[collectiblesCounter].id = collectiblesCounter
 	physics.addBody(collectibles[collectiblesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
