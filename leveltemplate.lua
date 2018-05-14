@@ -11,7 +11,7 @@ local backgroundnear1
 local backgroundnear2
 
 local credit = 0	--Credit
-local debit = 0	--Debit
+local debit = 0		--Debit
 local life = 0		--Vidas
 local score = 0
 
@@ -19,21 +19,19 @@ local creditText
 local debitText
 local lifeText
 
-local speed = 20;
+local speed = 10;
 local jumpLimit = 0
 
 local gamePaused = false
 local playerT
 
-local obstacles = {}				--Cria vetor de despesas
-local obstaclesCounter = 0				--Qtd de elementos de despesas
-local obstaclesDisappear = 0		--Despesas desaparecidas
+local invoices = {}		--Cria vetor de despesas
+local invCount = 0		--Qtd de elementos de despesas
+local invoicesD = 0		--Despesas desaparecidas
 
-local qtdBonusIncomes = 10 		-- Tiro
-
-local collectibles = {}
-local collectiblesCounter = 0
-local collectiblesDisappear = 0
+local incomes = {}
+local incCount = 0
+local incomesD = 0
 
 local currentLevel
 
@@ -127,7 +125,6 @@ function lvl:buildPause(player)
 		pausebtn.y = 25
 		pausebtn:addEventListener("tap", pauseGame)
 		playerT = player
-		print('---JOGADOR')
 		print(playerT)
 		headerGroup:insert(pausebtn)
 end
@@ -157,15 +154,6 @@ function lvl:buildHeader(debitBoolean, lifeBoolean, creditBoolean) --Faixa la em
 	end
 
 	return headerGroup
-end
-
-function lvl:addBonusIncomes(score)
-	qtdBonusIncomes = qtdBonusIncomes + score
-	numShoots.text = "x" .. qtdBonusIncomes	
-end
-
-function lvl:getqtdBonusIncomess()
-	return qtdBonusIncomes
 end
 
 function lvl:addDebit(score)
@@ -216,14 +204,12 @@ function lvl:createBackground(currentLevel)
 	background = display.newImageRect(backGroup, base.levels[currentLevel].background, display.actualContentWidth, display.actualContentHeight )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
-	backGroup:insert(background) --OK
-	--ACIMA OK
+	backGroup:insert(background)
 
 	local aux1 = math.random(1, base.levels[currentLevel].numBackgroundsNear) -- Deifini o intervalo de opções	
 	backgroundnear1 = display.newImage(base.levels[currentLevel].backgroundNear[aux1].path)
 	backgroundnear1.y = base.levels[currentLevel].backgroundNear[aux1].y
 	backgroundnear1.x = 240
-	
 	backGroup:insert(backgroundnear1)
 
 	local aux2 = math.random(1, base.levels[currentLevel].numBackgroundsNear)
@@ -236,8 +222,6 @@ function lvl:createBackground(currentLevel)
 	return backGroup
 
 end
-
-
 
 function lvl:updateBackground(currentLevel)
 	local backGroup = display.newGroup()
@@ -309,78 +293,74 @@ end
 
 function lvl:createInvoices(currentLevel)
 
-	local yVal = math.random(100, display.contentHeight-80)
-	local numObst = math.random(1, base.levels[currentLevel].numObstacles)
+	local height = math.random(100, display.contentHeight-80)
+	local numBills = math.random(1, base.qtdBill)
 	
-	obstacles[obstaclesCounter] = display.newImageRect(base.levels[currentLevel].obstacles[numObst].path, 55, 55)
-	obstacles[obstaclesCounter].x = display.contentWidth + 50
-	obstacles[obstaclesCounter].y = yVal
-	obstacles[obstaclesCounter].name = "BILLS"
-	obstacles[obstaclesCounter].id = obstaclesCounter
-	obstacles[obstaclesCounter].type = base.levels[currentLevel].obstacles[numObst].type	
-	physics.addBody(obstacles[obstaclesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
-	obstaclesCounter = obstaclesCounter + 1
-	return obstacles[obstaclesCounter - 1]
+	invoices[invCount] = display.newImageRect(base.bills[numBills].path, 55, 55)
+	invoices[invCount].x = display.contentWidth + 50
+	invoices[invCount].y = height
+	invoices[invCount].name = base.bills[numBills].name
+	invoices[invCount].value = base.bills[numBills].value
+	invoices[invCount].id = invCount
+	physics.addBody(invoices[invCount], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
+	invCount = invCount + 1
+	return invoices[invCount - 1]
 end
 
-function lvl:moveObstacles()
-	for a = 0, obstaclesCounter, 1 do
-		if obstacles[a] ~= nil and obstacles[a].x ~= nil then
-			if obstacles[a].x < -100 then
-				obstaclesDisappear = obstaclesDisappear + 1
+function lvl:moveInvoices()
+	for a = 0, invCount, 1 do
+		if invoices[a] ~= nil and invoices[a].x ~= nil then
+			if invoices[a].x < -100 then
+				invoicesD = invoicesD + 1
 				timer.performWithDelay(1, function()
-					obstacles[a] = nil;
+					invoices[a] = nil;
 				end, 1)
 			else
-				obstacles[a].x = obstacles[a].x  - (5/2) -- spped/2
+				invoices[a].x = invoices[a].x  - (5/2)  -- spped/2
 			end
 		end
 	end
-end
-
-function lvl:collideCollectible()
-	obstaclesDisappear = obstaclesDisappear + 1
 end
 
 function lvl:collideInvoices()
-	obstaclesDisappear = obstaclesDisappear + 1
+	invoicesD = invoicesD + 1
 end
 
-function lvl:createCollectible(currentLevel)
-	local yVal = math.random(100, display.contentHeight-80)
+function lvl:createIncomes(currentLevel)
+	local height = math.random(100, display.contentHeight-80)	
+	local numColl = math.random(1, base.qtdMoney)
+	print(numColl)
 	
-	local numColl = math.random(1, base.levels[currentLevel].numCollectibles)
+	incomes[incCount] = display.newImageRect(base.moneys[numColl].path, 55, 55)
+	incomes[incCount].x = display.contentWidth + 50
+	incomes[incCount].y = height
+	incomes[incCount].name = base.moneys[numColl].name	
+	incomes[incCount].value = base.moneys[numColl].value
+	incomes[incCount].id = incCount
+	physics.addBody(incomes[incCount], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
 	
-	collectibles[collectiblesCounter] = display.newImageRect(base.levels[currentLevel].collectibles[numColl].path, 55, 55)
-	collectibles[collectiblesCounter].x = display.contentWidth + 50
-	collectibles[collectiblesCounter].y = yVal
-	collectibles[collectiblesCounter].name = "WINS"	
-	collectibles[collectiblesCounter].type = base.levels[currentLevel].collectibles[numColl].type
-	collectibles[collectiblesCounter].id = collectiblesCounter
-	physics.addBody(collectibles[collectiblesCounter], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
-	
-	collectiblesCounter = collectiblesCounter + 1
+	incCount = incCount + 1
 
-	return collectibles[collectiblesCounter - 1]
+	return incomes[incCount - 1]
 end
 
-function lvl:moveCollectibles()
-	for a = 0, collectiblesCounter, 1 do
-		if collectibles[a] ~= nil and collectibles[a].x ~= nil then
-			if collectibles[a].x < -100 then
-				collectiblesDisappear = collectiblesDisappear + 1
+function lvl:moveIncomes()
+	for a = 0, incCount, 1 do
+		if incomes[a] ~= nil and incomes[a].x ~= nil then
+			if incomes[a].x < -100 then
+				incomesD = incomesD + 1
 				timer.performWithDelay(1, function()
-					collectibles[a] = nil;
+					incomes[a] = nil;
 				end, 1)
 			else
-				collectibles[a].x = collectibles[a].x  - (5/2)  -- spped/2
+				incomes[a].x = incomes[a].x  - (5/2)  -- spped/2
 			end
 		end
 	end
 end
 
-function lvl:getYears()
-	return years
+function lvl:collideIncomes()
+	incomesD = incomesD + 1
 end
 
 function lvl:getCurrentLevel()
@@ -400,11 +380,11 @@ function lvl:setJumpLimit(num)
 end
 
 function lvl:destroy()
-	display.remove(collectGroup)
-	obstacles = {}
-	collectibles = {}
-	collectiblesCounter = 0
-	obstaclesCounter = 0
+	display.remove(collectGroup)	
+	incomes = {}
+	incCount = 0
+	invoices = {}
+	invCount = 0
 	score = 0
 end
 

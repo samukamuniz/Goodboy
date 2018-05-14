@@ -43,24 +43,24 @@ function scene:create( event )
 		local aux = math.random(0, 10)
 
 		if aux <= 6 then
-			obstacle = level:createInvoices(level:getCurrentLevel())
-			mainGroup:insert(obstacle)
+			invoices = level:createInvoices(level:getCurrentLevel())
+			mainGroup:insert(invoices)
 		else
-			collectible = level:createCollectible(level:getCurrentLevel())
-			mainGroup:insert(collectible)
+			incomes = level:createIncomes(level:getCurrentLevel())
+			mainGroup:insert(incomes)
 		end
 	end
 
 	local function update( event )
-		level:moveCollectibles()
-		level:moveObstacles()
+		level:moveIncomes()
+		level:moveInvoices()
 		level:moveFloor(floor)
 		
 		back = level:updateBackground(level:getCurrentLevel())
 		backGroup:insert(back)
 	end
 
-	movementLoop = timer.performWithDelay(1, update, -1)
+	movementLoop = timer.performWithDelay(10, update, -1)
 	emergeLoop = timer.performWithDelay(1000, creationLoop, -1 )
 
 	local function playerCollision( self, event )
@@ -70,23 +70,23 @@ function scene:create( event )
 		end
 
 		-- AQUI EU GANHO DINHEIRO
-		if( event.other.name == "WINS") then
+		if( event.other.name == "money") then
 			--playSFX(money)
 
-			if event.other.type == "10" then
+			if event.other.value == "10" then
 				level:addCredit(10)
 			end
-			if event.other.type == "20" then
+			if event.other.value == "20" then
 				level:addCredit(20)
 			end
-			if event.other.type == "50" then
+			if event.other.value == "50" then
 				level:addCredit(50)
 			end
-			if event.other.type == "100" then
+			if event.other.value == "100" then
 				level:addCredit(100)
 			end
 			
-			level:collideCollectible()
+			level:collideIncomes()
 			timer.performWithDelay(1, function()
 				event.other.alpha = 0
 		        event.other = nil
@@ -96,19 +96,19 @@ function scene:create( event )
 		end
 
 		-- AQUI EU PERCO DINHEIRO
-		if( event.other.name == "BILLS") then
+		if( event.other.name == "bill") then
 			--playSFX(money)
 			
-			if ( event.other.type == "drug") then
+			if ( event.other.value == "drug") then
 				level:addDebit(50)
 				level:reduceCredit(50)
 			end
 
-			if ( event.other.type == "lotery") then
+			if ( event.other.value == "lotery") then
 				level:addDebit(100)
 				level:reduceCredit(100)
 			end
-		
+	
 			level:collideInvoices()
 			if level:isAlive() then
 				timer.performWithDelay(1, function()
@@ -167,31 +167,22 @@ function scene:create( event )
 	end]]
 
 	jumpbtn = display.newImageRect("ui/button/up.png", 60, 60)
-	jumpbtn.x = 50
+	jumpbtn.x = 0
 	jumpbtn.y = display.contentHeight - 35
 
-	function jumpbtn:touch(event)		
+--Jump Function
+	function jumpbtn:touch(event)
 		if(event.phase == "began") then
-			jumpLimit = jumpLimit + 1				
-			if jumpLimit < 2 then
-				if(player.sequence == "running") then
-					player:removeSelf()
-					player = level:createPlayer("ui/sprite/sprite_boy.png", "jumping")
-					mainGroup:insert(player)
-					physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })			
-					player.isFixedRotation=true						
-					player:setSequence("running")
-					player:play()
-					player.collision = playerCollision			
-					player:addEventListener("collision")
-				else
-					--playSFX(jumpsound)					
-					player:setLinearVelocity(0, -240)
-				end
-				
-			end	
+			jumpLimit = jumpLimit + 1
+			if jumpLimit < 3 then
+			  physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })
+			  player:applyLinearImpulse(0, -0.50, player.x, player.y)
+			end
+		jumpLimit = 0
 		end
 	end
+	--Runtime:addEventListener("touch", onTouch)
+
 	jumpbtn:addEventListener("touch", jumpbtn)
 	uiGroup:insert(jumpbtn)
 		
