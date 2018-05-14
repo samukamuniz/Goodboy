@@ -52,7 +52,7 @@ function pauseGame()
 	timer.pause(emergeLoop)
 	pauseGroup = display.newGroup()
 
-	pauserect = display.newRect(0, 0, display.contentWidth+100, 640)
+	pauserect = display.newRect(0, 0, display.contentWidth+450, 640)
 	pauserect.x = display.contentWidth/2 + 180
 	pauserect:setFillColor(0)
 	pauserect.alpha = 0.75
@@ -120,9 +120,9 @@ function lvl:createPlayer(playerSheet, sequence)
 end
 
 function lvl:buildPause(player)
-		local pausebtn = display.newImageRect("ui/button/btnPause.png", 50, 50)
+		local pausebtn = display.newImageRect("ui/button/btnPause.png", 60, 60)
 		pausebtn.x = display.contentWidth
-		pausebtn.y = 25
+		pausebtn.y = 280
 		pausebtn:addEventListener("tap", pauseGame)
 		playerT = player
 		print(playerT)
@@ -301,6 +301,7 @@ function lvl:createInvoices(currentLevel)
 	invoices[invCount].y = height
 	invoices[invCount].name = base.bills[numBills].name
 	invoices[invCount].value = base.bills[numBills].value
+	invoices[invCount].type = base.bills[numBills].type
 	invoices[invCount].id = invCount
 	physics.addBody(invoices[invCount], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
 	invCount = invCount + 1
@@ -336,6 +337,7 @@ function lvl:createIncomes(currentLevel)
 	incomes[incCount].y = height
 	incomes[incCount].name = base.moneys[numColl].name	
 	incomes[incCount].value = base.moneys[numColl].value
+	incomes[incCount].type = base.moneys[numColl].type
 	incomes[incCount].id = incCount
 	physics.addBody(incomes[incCount], "kinematic",  { isSensor = true, gravity = 0, density=0.0 })
 	
