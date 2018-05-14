@@ -28,7 +28,7 @@ end
 
 function game()
 	--composer.gotoScene( "scene.menu", { params={ } } )
-	composer.gotoScene( "scene.level1", { params={ } } )
+	composer.gotoScene( "scene.menu", { params={ } } )
 end
 
 game()
