@@ -130,48 +130,9 @@ function scene:create( event )
 	end
 	player.collision = playerCollision
 	player:addEventListener("collision")
-	--[[
-	function goToNextLevel()
-		timer.performWithDelay(500, function()
-			--playSFX(lvlupsound)			
-		end)
-		local playery = player.y
-		local playerx = player.x
-		player = level:celebratePlayer(player, "ui/baby/celebrating.png")
-		player.y = playery
-		player.x = playerx
-		timer.performWithDelay(1, function()
-			physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0 })						
-		end)
-		jumpbtn:removeEventListener("touch", jumpbtn)		
-		shootbtn:removeEventListener("touch", shootbtn)
-		mainGroup:insert(player)
-		timer.pause(emergeLoop)
-		timer.pause(movementLoop)	
 
-		toLeft = timer.performWithDelay(1, function()
-			player.x = player.x - 1
-			if(player.x < 0) then
-				composer.gotoScene("scene.congratulations")
-			end
-		end, -1)
-		timer.pause(toLeft)
 
-		timer.performWithDelay(1500, function()
-			playery = player.y
-			playerx = player.x
-			player:removeSelf()
-			player = level:createPlayer("ui/baby/normal-sprite.png", "normalRun")
-			player.x = playerx
-			player.xScale = -1
-			player.y = playery
-			mainGroup:insert(player)
-			timer.resume(toLeft)
-			physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })			
-			player:setSequence("normalRun")
-			player:play()
-		end)
-	end]]
+	--FUNÇÃO PARA IR PARA O PRÓXIMO NIVEL
 
 	jumpbtn = display.newImageRect("ui/button/up.png", 60, 60)
 	jumpbtn.x = 0
