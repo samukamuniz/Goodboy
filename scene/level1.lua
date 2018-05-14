@@ -61,7 +61,7 @@ function scene:create( event )
 	end
 
 	movementLoop = timer.performWithDelay(10, update, -1)
-	emergeLoop = timer.performWithDelay(1000, creationLoop, -1 )
+	emergeLoop = timer.performWithDelay(1700, creationLoop, -1 )
 
 	local function playerCollision( self, event )
 		
@@ -70,20 +70,23 @@ function scene:create( event )
 		end
 
 		-- AQUI EU GANHO DINHEIRO
-		if( event.other.name == "money") then
+		if( event.other.type == "money") then
 			--playSFX(money)
 
-			if event.other.value == "10" then
-				level:addCredit(10)
+			if event.other.name == "10" then
+				level:addCredit(event.other.value)
 			end
-			if event.other.value == "20" then
-				level:addCredit(20)
+			if event.other.name == "20" then
+				level:addCredit(event.other.value)
 			end
-			if event.other.value == "50" then
-				level:addCredit(50)
+			if event.other.name == "50" then
+				level:addCredit(event.other.value)
 			end
-			if event.other.value == "100" then
-				level:addCredit(100)
+			if event.other.name == "100" then
+				level:addCredit(event.other.value)
+			end
+			if event.other.name == "bonus" then
+				level:addCredit(event.other.value)
 			end
 			
 			level:collideIncomes()
@@ -96,17 +99,21 @@ function scene:create( event )
 		end
 
 		-- AQUI EU PERCO DINHEIRO
-		if( event.other.name == "bill") then
+		if( event.other.type == "bill") then
 			--playSFX(money)
-			
-			if ( event.other.value == "drug") then
-				level:addDebit(50)
-				level:reduceCredit(50)
+			if ( event.other.name == "beer") then
+				level:addDebit(event.other.value)
+				level:reduceCredit(event.other.value)
+			end			
+
+			if ( event.other.name == "drug") then
+				level:addDebit(event.other.value)
+				level:reduceCredit(event.other.value)
 			end
 
-			if ( event.other.value == "lotery") then
-				level:addDebit(100)
-				level:reduceCredit(100)
+			if ( event.other.name == "lotery") then
+				level:addDebit(event.other.value)
+				level:reduceCredit(event.other.value)
 			end
 	
 			level:collideInvoices()
@@ -176,12 +183,11 @@ function scene:create( event )
 			jumpLimit = jumpLimit + 1
 			if jumpLimit < 3 then
 			  physics.addBody(player, "dynamic", { density = 0, friction = 0, bounce = 0, gravity = 0 })
-			  player:applyLinearImpulse(0, -0.50, player.x, player.y)
+			  player:applyLinearImpulse(0, -0.35, player.x, player.y)
 			end
 		jumpLimit = 0
 		end
 	end
-	--Runtime:addEventListener("touch", onTouch)
 
 	jumpbtn:addEventListener("touch", jumpbtn)
 	uiGroup:insert(jumpbtn)
