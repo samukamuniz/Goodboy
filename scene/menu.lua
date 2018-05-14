@@ -31,24 +31,26 @@ local function openSettings()
 	--composer.gotoScene( "scene.levels" )
 end
 
+local backGroup = display.newGroup()
+local mainGroup = display.newGroup()
 
 function scene:create( event )
 	
 	local sceneGroup = self.view
 
-		local background = display.newImageRect( "ui/menu/display.png", display.actualContentWidth, display.actualContentHeight )
+		local background = display.newImageRect( backGroup,"ui/menu/display.png", display.actualContentWidth, display.actualContentHeight )
 		background.x = cX 
 		background.y = cY
 
-	    local play = display.newImageRect("ui/menu/play.png", 144, 44)
+	    local play = display.newImageRect(mainGroup, "ui/menu/play.png", 144, 44)
 	    play.x = cX
 	    play.y = cY-30
 
-	    local levels = display.newImageRect("ui/menu/levels.png", 144, 44)
+	    local levels = display.newImageRect(mainGroup, "ui/menu/levels.png", 144, 44)
 	    levels.x = cX 
 	    levels.y = cY+20
 
-	    local settings = display.newImageRect("ui/menu/settings.png", 144, 44)
+	    local settings = display.newImageRect(mainGroup, "ui/menu/settings.png", 144, 44)
 	    settings.x = cX
 	    settings.y = cY+70 
 
@@ -85,6 +87,10 @@ function scene:hide( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		composer.removeScene("menu")
+		display.remove(backGroup)
+		print( "Removendo background" )
+		display.remove(mainGroup)
+		print( "Removendo Botões" )
 		composer.hideOverlay()
 	end
 end
