@@ -26,7 +26,7 @@ end
 function scene:create( event )
 	local sceneGroup = self.view
 
-	local background = display.newImageRect( sceneGroup, "ui/menu/sky.png", 580, 300 )
+	local background = display.newImageRect( sceneGroup, "images/levels/imgLvl0.png", 580, 300 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 	sceneGroup:insert( background )
@@ -34,7 +34,7 @@ function scene:create( event )
 	local levelSelectGroup = display.newGroup()
 
 	local xOffset = 150
-	local yOffset = 50
+	local yOffset = 30
 
 	local scrollView = widget.newScrollView{
 		left = -50,
@@ -52,15 +52,15 @@ function scene:create( event )
 
 	for i = 1, myData.maxLevels do
 
-		background = display.newImageRect(myData.settings.levels[i].background, 150, 100)
+		background = display.newImageRect(myData.settings.levels[i].background, 160, 100)
 		background.x = xOffset
 		background.y = yOffset
 		scrollView:insert(background)
 
 		buttons[i] = widget.newButton({
 			id = tostring(i),
-			width = 50,
-			height = 33,
+			width = 55,
+			height = 55,
 			defaultFile = "ui/button/btnPause.png",
 			onEvent = handleLevelSelect,
 		})			
@@ -69,7 +69,7 @@ function scene:create( event )
 		buttons[i].y = yOffset
 		scrollView:insert( buttons[i] )
 
-		titleText = display.newText(myData.settings.levels[i].title, 0, 0, "zorque.ttf", 30)
+		titleText = display.newText(myData.settings.levels[i].title, 0, 0, "RifficFree-Bold.ttf", 20)
 		titleText:setFillColor(0.2)
 		titleText.x = xOffset
 		titleText.y = yOffset + 100
@@ -107,9 +107,9 @@ function scene:create( event )
 	levelSelectGroup.x = display.contentCenterX
 	levelSelectGroup.y = display.contentCenterY
 	
-	local doneButton = display.newImageRect( sceneGroup, "ui/background/backbtn.png", 150, 50 )
-	doneButton.x = display.contentCenterX + 200
-	doneButton.y = 40
+	local doneButton = display.newImageRect( sceneGroup, "images/buttons/menu.png", 55, 55 )
+	doneButton.x = 250
+	doneButton.y = 280
 	doneButton:addEventListener( "tap", handleCancelButtonEvent)
 	
 	sceneGroup:insert(doneButton)
