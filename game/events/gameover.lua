@@ -10,9 +10,10 @@ local level = require("leveltemplate")
 local scene = composer.newScene()
 
 local background
+local alert
 
 local function gotoMenu()
-	composer.gotoScene( "scene.level1" )
+	composer.gotoScene( "game.menu.menu" )
 end
 
 function scene:create( event )
@@ -21,23 +22,22 @@ function scene:create( event )
 	level:setValues(100,100,3)
 
 
-	-- Code here runs when the scene is first created but has not yet appeared on screen
-
-	background = display.newImageRect( sceneGroup, "ui/background/gameover.png", 600, 400 )
+	background = display.newImageRect( sceneGroup, "images/screens/imgLvl0.png", 580, 300 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
+	sceneGroup:insert( background )
 
-	local backButton = display.newImageRect( sceneGroup, "ui/background/backBtn.png", 200, 65 )
-	backButton.x = display.contentCenterX + 180
-	backButton.y = display.contentCenterY + 120
+	alert = display.newImageRect( sceneGroup, "images/events/gameOver.png", 304, 176 )
+	alert.x = display.contentCenterX
+	alert.y = display.contentCenterY
+	sceneGroup:insert( alert )
 
-	--[[local age = level:createScoreAge()
-	sceneGroup:insert(age)
-	age.y = 50]]
+	local backButton = display.newImageRect( sceneGroup, "images/buttons/menuBtn.png", 55, 55 )
+	backButton.x = display.contentCenterX
+	backButton.y = display.contentCenterY + 40
+	sceneGroup:insert( backButton )
 
 	backButton:addEventListener( "tap", gotoMenu )
-	--level:reduceProjectiles(level:getNumProjectiles())
-	--level:addProjectiles(10)
 end
 
 -- show()
@@ -67,6 +67,9 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
+		display.remove(sceneGroup)
+		print( "Removendo Botões" )
+		composer.hideOverlay()
 
 	end
 end

@@ -6,29 +6,30 @@ composer.recycleOnSceneChange = true
 
 local physics = require("physics")
 local widget = require( "widget" )
-local sounds = require( "soundsfile" )
+local sounds = require( "sounds" )
 local base = require( "base")
 
 -- Coordenadas e Anchor Points
 local cX = display.contentCenterX -- Coordenada X
 local cY = display.contentCenterY -- Coordenada Y
-
+local acW = display.actualContentWidth
+local acH = display.actualContentHeight
 -- Create a new Composer scene
 local scene = composer.newScene()
 
 local function gotoGame()
-	--playSFX(menupicksound)
+	--playSFX(singsSounds)
 	composer.gotoScene( "scene.level1" )
 end
 
 local function gotoLevels()
-	--playSFX(menupicksound)
+	--playSFX(singsSounds)
 	composer.gotoScene( "scene.levels" )
 end
 
-local function openSettings()
-	--playSFX(menupicksound)
-	--composer.gotoScene( "scene.levels" )
+local function gotoAbout()
+	--playSFX(singsSounds)
+	composer.gotoScene( "scene.about" )
 end
 
 local backGroup = display.newGroup()
@@ -38,29 +39,29 @@ function scene:create( event )
 	
 	local sceneGroup = self.view
 
-		local background = display.newImageRect( backGroup,"ui/menu/display.png", display.actualContentWidth, display.actualContentHeight )
+		local background = display.newImageRect( backGroup,"ui/menu/display.png", acW, acH )
 		background.x = cX 
 		background.y = cY
 
-	    local play = display.newImageRect(mainGroup, "ui/menu/play.png", 144, 44)
+	    local play = display.newImageRect(mainGroup, "images/buttons/playBtn.png", 144, 44)
 	    play.x = cX
 	    play.y = cY-30
 
-	    local levels = display.newImageRect(mainGroup, "ui/menu/levels.png", 144, 44)
+	    local levels = display.newImageRect(mainGroup, "images/buttons/levelsBtn.png", 144, 44)
 	    levels.x = cX 
 	    levels.y = cY+20
 
-	    local settings = display.newImageRect(mainGroup, "ui/menu/settings.png", 144, 44)
-	    settings.x = cX
-	    settings.y = cY+70 
+	    local about = display.newImageRect(mainGroup, "images/buttons/about_us.png", 144, 44)
+	    about.x = cX
+	    about.y = cY+70 
+	    --playSFX(singsSounds)
 
 	    play:addEventListener( "tap", gotoGame )
 	    --audio.play( mu )
 		levels:addEventListener( "tap", gotoLevels )
-		--settings:addEventListener( "tap", gotosettings )
+		about:addEventListener( "tap", gotoAbout )
 end
 
--- show()
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -75,8 +76,6 @@ function scene:show( event )
 	end
 end
 
-
--- hide()
 function scene:hide( event )
 
 	local sceneGroup = self.view
@@ -95,15 +94,10 @@ function scene:hide( event )
 	end
 end
 
-
--- destroy()
 function scene:destroy( event )
-
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
-
 end
-
 
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
@@ -113,7 +107,5 @@ scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
-
-
 
 return scene
