@@ -4,7 +4,7 @@ local composer = require( "composer")
 local widget = require( "widget" )
 --local sounds = require( "soundsfile" )
 
-local level = require("leveltemplate")
+local level 	= require("game.tracking.mainTemplate")
 
 -- Create a new Composer scene
 local scene = composer.newScene()
