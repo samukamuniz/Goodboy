@@ -2,7 +2,7 @@
 local composer 	= require("composer") 	 		--Importa o Composer
 local physics 	= require("physics") 		 	--Importa a Fisica
 local sounds 	= require("sounds")	 			--Importa o Som
-local level 	= require("leveltemplate")		--Importa o aqruivo leveltemplate.lua
+local level 	= require("game.tracking.mainTemplate")
 local scene 	= composer.newScene()			--Cria uma nova cena pelo Composer
 composer.recycleOnSceneChange = true			
 
