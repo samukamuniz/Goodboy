@@ -27,18 +27,18 @@ function scene:create( event )
 	background.y = display.contentCenterY
 	sceneGroup:insert( background )
 
-	alert = display.newImageRect( sceneGroup, "images/events/gameOver.png", 304, 176 )
+	alert = display.newImageRect( sceneGroup, "images/events/congratulationsFinal.png", 304, 176 )
 	alert.x = display.contentCenterX
 	alert.y = display.contentCenterY
 	sceneGroup:insert( alert )
 
-	local backButton = display.newImageRect( sceneGroup, "images/buttons/menuBtn.png", 55, 55 )
-	backButton.x = display.contentCenterX
-	backButton.y = display.contentCenterY + 120
-	sceneGroup:insert( backButton )
+	local backMenu = display.newImageRect( sceneGroup, "images/buttons/menuBtn.png", 56 , 56 )
+	backMenu.x = display.contentCenterX
+	backMenu.y = display.contentCenterY + 120
+	sceneGroup:insert( backMenu )
 
-	backButton:addEventListener( "tap", gotoMenu )
-	print( "Indo para o Menu" )
+	backMenu:addEventListener( "tap", gotoMenu )
+	print( "Indo para o Próximo jogo" )
 end
 
 -- show()
@@ -52,10 +52,8 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-
 	end
 end
-
 
 -- hide()
 function scene:hide( event )
@@ -69,12 +67,10 @@ function scene:hide( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		display.remove(sceneGroup)
-		print( "Game Over: Removendo Botões" )
+		print( "Congratulation: Removendo Botões" )
 		composer.hideOverlay()
-
 	end
 end
-
 
 -- destroy()
 function scene:destroy( event )
@@ -84,7 +80,6 @@ function scene:destroy( event )
 
 end
 
-
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------
@@ -93,7 +88,5 @@ scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
-
-
 
 return scene
