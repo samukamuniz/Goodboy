@@ -1,7 +1,7 @@
 local composer 	= require("composer")
 local scene 	= composer.newScene()
 local widget 	= require("widget")
-local myData 	= require("data")
+local myData 	= require("game.tracking.tracking_progress")
 local starVertices = { 0,-8,1.763,-2.427,7.608,-2.472,2.853,0.927,4.702,6.472,0.0,3.0,-4.702,6.472,-2.853,0.927,-7.608,-2.472,-1.763,-2.427 }
 
 local function handleCancelButtonEvent()
@@ -56,7 +56,7 @@ function scene:create( event )
 
 	for i = 1, myData.maxLevels do
 
-		background = display.newImageRect(myData.settings.levels[i].background, 160, 100)
+		background = display.newImageRect(myData.settings.levels[i].background, 180, 120)
 		background.x = xOffset
 		background.y = yOffset
 		scrollView:insert(background)
@@ -65,7 +65,7 @@ function scene:create( event )
 			id = tostring(i),
 			width = 55,
 			height = 55,
-			defaultFile = "ui/button/btnPause.png",
+			defaultFile = "images/buttons/pauseBtn.png",
 			onEvent = handleLevelSelect,
 		})			
 
